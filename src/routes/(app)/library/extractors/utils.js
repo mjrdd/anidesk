@@ -4,7 +4,6 @@ import { fetch, ResponseType } from "@tauri-apps/api/http";
  *
  * @param {Element | null} element
  * @param {string} attr
- * @returns {string | undefined}
  */
 export function getAttribute(element, attr) {
   return element?.getAttribute(attr)?.trim();
@@ -13,7 +12,6 @@ export function getAttribute(element, attr) {
 /**
  *
  * @param {Element | null} element
- * @returns {string | undefined}
  */
 export function getTextContent(element) {
   return element?.textContent?.trim();
@@ -22,7 +20,6 @@ export function getTextContent(element) {
 /**
  *
  * @param {string} text
- * @returns {Document}
  */
 export function parseDOMFromString(text) {
   return new DOMParser().parseFromString(text, "text/html");
@@ -33,7 +30,6 @@ export function parseDOMFromString(text) {
  * @param {string} url
  * @param {string} [baseUrl]
  * @param {Record<string, string>} [params]
- * @returns {Promise<string>}
  */
 export async function requestPageAsText(url, baseUrl, params) {
   /** @type {URL} */

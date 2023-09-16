@@ -2,15 +2,19 @@ import { getAttribute, getTextContent, parseDOMFromString, requestPageAsText } f
 
 const baseUrl = "https://gogoanime3.net/";
 
-export async function requestPopularAnimeList() {
-  const dom = parseDOMFromString(await requestPageAsText("/popular.html", baseUrl));
-
-  let list = [];
-
+/**
+ *
+ * @param {string} html
+ */
+function parseAnimeList(html) {
+  const dom = parseDOMFromString(html)
   const listOfElements = dom.querySelectorAll(".main_body .last_episodes ul.items > li");
+
+  const animeList = [];
 
   for (let element of Array.from(listOfElements)) {
     let data = {};
+    data.url = getAttribute(element.querySelector("p.name > a"), "href");
 
     let info = {};
     info.title = getTextContent(element.querySelector("p.name > a"));
@@ -18,9 +22,18 @@ export async function requestPopularAnimeList() {
     info.releaseDate = getTextContent(element.querySelector("p.released"));
     data.info = info;
 
-    data.url = getAttribute(element.querySelector("p.name > a"), "href");
 
-    list.push(data);
+    animeList.push(data);
   }
-  return list;
+
+  return animeList;
+}
+
+export async function requestPopularAnimeList() {
+
+  return parseAnimeList(await requestPageAsText("/popular.html", baseUrl));
+}
+
+export async function requestAnimeMoviesList() {
+  return parseAnimeList(await requestPageAsText("/anime-movies.html", baseUrl))
 }
