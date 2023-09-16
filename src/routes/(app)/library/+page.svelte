@@ -3,8 +3,10 @@
   import {
     animeMoviesStore,
     popularAnimeStore,
+    requestAnimeByKeyword,
     requestAnimeMoviesList,
-    requestPopularAnimeList
+    requestPopularAnimeList,
+    searchedStore
   } from "./manager";
 
   import Card from "./Card.svelte";
@@ -17,11 +19,21 @@
 
   let currentTab = "popular";
 
-  function requestAnimePage() {}
+  /**
+   *
+   * @param {SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }} e
+   */
+  export async function searchAnime(e) {
+    const formData = new FormData(e.currentTarget);
+    const searchQuery = formData.get("search");
+
+    searchedStore.set(await requestAnimeByKeyword(searchQuery?.toString() || ""));
+    currentTab = "search";
+  }
 </script>
 
 <header class="flex justify-center p-4">
-  <form class="flex w-full max-w-xl gap-3">
+  <form on:submit|preventDefault={searchAnime} class="flex w-full max-w-xl gap-3">
     <input
       type="text"
       class="input variant-form-material"
@@ -39,16 +51,23 @@
 
   <svelte:fragment slot="panel">
     {#if currentTab === "popular"}
-      <section class="flex flex-wrap justify-center gap-4 p-4">
+      <section class="flex flex-wrap gap-4 p-4">
         {#each $popularAnimeStore ?? [] as anime}
-          <Card info={anime.info} on:click={requestAnimePage} />
+          <Card info={anime.info} />
         {/each}
       </section>
     {/if}
     {#if currentTab === "movies"}
-      <section class="flex flex-wrap justify-center gap-4 p-4">
+      <section class="flex flex-wrap gap-4 p-4">
         {#each $animeMoviesStore ?? [] as anime}
-          <Card info={anime.info} on:click={requestAnimePage} />
+          <Card info={anime.info} />
+        {/each}
+      </section>
+    {/if}
+    {#if currentTab === "search"}
+      <section class="flex flex-wrap gap-4 p-4">
+        {#each $searchedStore ?? [] as anime}
+          <Card info={anime.info} />
         {/each}
       </section>
     {/if}

@@ -7,7 +7,7 @@ const baseUrl = "https://gogoanime3.net/";
  * @param {string} html
  */
 function parseAnimeList(html) {
-  const dom = parseDOMFromString(html)
+  const dom = parseDOMFromString(html);
   const listOfElements = dom.querySelectorAll(".main_body .last_episodes ul.items > li");
 
   const animeList = [];
@@ -22,18 +22,24 @@ function parseAnimeList(html) {
     info.releaseDate = getTextContent(element.querySelector("p.released"));
     data.info = info;
 
-
     animeList.push(data);
   }
 
   return animeList;
 }
 
-export async function requestPopularAnimeList() {
-
-  return parseAnimeList(await requestPageAsText("/popular.html", baseUrl));
+/**
+ *
+ * @param {string} keyword
+ */
+export async function requestAnimeByKeyword(keyword) {
+  return parseAnimeList(await requestPageAsText("/search.html", baseUrl, { keyword }));
 }
 
 export async function requestAnimeMoviesList() {
-  return parseAnimeList(await requestPageAsText("/anime-movies.html", baseUrl))
+  return parseAnimeList(await requestPageAsText("/anime-movies.html", baseUrl));
+}
+
+export async function requestPopularAnimeList() {
+  return parseAnimeList(await requestPageAsText("/popular.html", baseUrl));
 }
