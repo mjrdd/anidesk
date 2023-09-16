@@ -13,6 +13,8 @@
     "tauri": "tauri"
   },
   "devDependencies": {
+    "@iconify-icons/material-symbols": "^1.2.55",
+    "@iconify/svelte": "^3.1.4",
     "@skeletonlabs/skeleton": "^2.1.0",
     "@skeletonlabs/tw-plugin": "^0.2.0",
     "@sveltejs/adapter-static": "^2.0.3",
