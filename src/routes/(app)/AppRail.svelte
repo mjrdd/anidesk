@@ -7,7 +7,11 @@
 </script>
 
 <AppRail>
-  <AppRailAnchor href="/library" selected={$page.url.pathname === "/library"} title="Library">
+  <AppRailAnchor
+    href="/library"
+    selected={$page.url.pathname.startsWith("/library")}
+    title="Library"
+  >
     <svelte:fragment slot="lead">
       <Icon icon={iconLibrary} width="24" />
     </svelte:fragment>
